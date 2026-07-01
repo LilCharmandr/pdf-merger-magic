@@ -8,6 +8,8 @@ import { DropZone } from "@/components/pdf-combiner/DropZone";
 import { FileList } from "@/components/pdf-combiner/FileList";
 import type { CombinerItem } from "@/components/pdf-combiner/FileRow";
 import { combineFiles, detectKind } from "@/lib/combine-pdf";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -31,6 +33,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const [items, setItems] = useState<CombinerItem[]>([]);
+  const [filename, setFilename] = useState("combined");
   const [busy, setBusy] = useState(false);
   const itemsRef = useRef<CombinerItem[]>([]);
   itemsRef.current = items;
@@ -99,8 +102,8 @@ function Index() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "combined.pdf";
-      document.body.appendChild(a);
+      const safe = (filename.trim() || "combined").replace(/\.pdf$/i, "").replace(/[\\/:*?"<>|]+/g, "-");
+      a.download = `${safe}.pdf`;
       a.click();
       a.remove();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
@@ -145,7 +148,21 @@ function Index() {
             </div>
             <FileList items={items} onReorder={setItems} onRemove={removeItem} />
 
-            <div className="mt-6 flex justify-end">
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div className="flex-1 space-y-1.5">
+                <Label htmlFor="filename">File name</Label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    id="filename"
+                    value={filename}
+                    onChange={(e) => setFilename(e.target.value)}
+                    placeholder="combined"
+                    disabled={busy}
+                    className="max-w-xs"
+                  />
+                  <span className="text-sm text-muted-foreground">.pdf</span>
+                </div>
+              </div>
               <Button size="lg" onClick={handleCombine} disabled={busy}>
                 {busy ? (
                   <>
