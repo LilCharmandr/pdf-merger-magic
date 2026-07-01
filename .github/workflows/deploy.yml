@@ -18,7 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: oven-sh/setup-bun@v2
         with:
@@ -41,12 +41,12 @@ jobs:
       - name: Build
         env:
           BASE_PATH: ${{ steps.base.outputs.path }}
-        run: bun run build
+        run: bun run build:pages
 
       - name: Locate build output
         id: out
         run: |
-          for d in .output/public dist .vercel/output/static build; do
+          for d in dist .output/public .vercel/output/static build; do
             if [ -d "$d" ]; then echo "dir=$d" >> "$GITHUB_OUTPUT"; exit 0; fi
           done
           echo "No static output directory found" >&2; exit 1
