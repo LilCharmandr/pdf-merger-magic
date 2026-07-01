@@ -1,37 +1,38 @@
 ## Goal
-Deploy the PDF Combiner to GitHub Pages as a static site.
+Make the app build and deploy reliably on GitHub Pages.
 
-## Context
-The project is fully client-side (no server functions, no DB). But it's built on TanStack Start with the Nitro/Cloudflare SSR preset. GitHub Pages only serves static files, so we need a prerendered/SPA build and a Pages workflow.
+## What I’ll change
+1. **Stop using the TanStack/Nitro SSR build for GitHub Pages**
+   - The current error happens because GitHub Pages is static hosting, while `vite build` is still trying to run the SSR/Nitro build pipeline.
+   - I’ll add a separate Pages build that uses Vite as a client-only static build.
 
-## Approach
+2. **Add a GitHub Pages-specific Vite config**
+   - Keep the normal Lovable/TanStack config intact for preview/development.
+   - Add a separate config for GitHub Pages that outputs static files to `dist` and respects `BASE_PATH`.
 
-**1. Switch build to a static preset**
-Update `vite.config.ts` to configure Nitro with `preset: "static"` and enable prerendering of `/` so a plain `index.html` is emitted. Add a `404.html` fallback (copy of `index.html`) so client-side routes work on refresh.
+3. **Add a GitHub Pages entry file**
+   - Mount the existing React app in browser-only mode for Pages.
+   - Avoid SSR/prerender so the PDF combiner works as a static client app.
 
-**2. Base path for project pages**
-GitHub Pages serves user/org sites at `https://<user>.github.io/<repo>/`. Set Vite `base: "/<repo>/"` (configurable). If the user plans to deploy to a root domain (custom domain or `<user>.github.io`), base stays `/`. I'll ask which.
+4. **Update the workflow**
+   - Change the Build step from `bun run build` to the new Pages build script.
+   - Keep `404.html` fallback and `.nojekyll` so refreshes and deep links work.
 
-**3. GitHub Actions workflow**
-Add `.github/workflows/deploy.yml` that:
-- runs on push to `main`
-- installs with `bun install`
-- runs `bun run build`
-- uploads the static output dir (`dist/` or Nitro's `.output/public`) as a Pages artifact
-- deploys via `actions/deploy-pages`
+5. **Keep current app behavior unchanged**
+   - No UI/feature changes.
+   - The app will still merge files fully in the browser.
 
-**4. Jekyll bypass**
-Add empty `public/.nojekyll` so GitHub Pages serves files/folders starting with `_`.
+## Technical details
+- Add a script like `build:pages` to `package.json`.
+- Add a dedicated `vite.pages.config.ts` using React, path aliases, Tailwind, and `base: process.env.BASE_PATH ?? "/"`.
+- Add a small browser-only entry that renders the existing route tree with TanStack Router.
+- Update `.github/workflows/deploy.yml` to run `bun run build:pages` and upload `dist`.
 
-**5. README note**
-Short section: enable Pages → Source: GitHub Actions, then push.
+## Expected result
+The GitHub Actions build should stop hitting the SSR error:
 
-## Files
-- `vite.config.ts` — add `nitro.preset: "static"`, prerender routes, `vite.base`
-- `.github/workflows/deploy.yml` — new
-- `public/.nojekyll` — new (empty)
-- `public/404.html` — generated during build step (copy of index.html), or handled in workflow
-- `README.md` — brief deploy instructions
+```text
+rollupOptions.input should not be an html file when building for SSR
+```
 
-## Question before finalizing
-1. What's the GitHub repo name? (needed for `base`) — or will you use a custom domain / `<user>.github.io` root?
+and GitHub Pages should publish the static PDF combiner successfully.
