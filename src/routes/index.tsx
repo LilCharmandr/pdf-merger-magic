@@ -148,7 +148,21 @@ function Index() {
             </div>
             <FileList items={items} onReorder={setItems} onRemove={removeItem} />
 
-            <div className="mt-6 flex justify-end">
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div className="flex-1 space-y-1.5">
+                <Label htmlFor="filename">File name</Label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    id="filename"
+                    value={filename}
+                    onChange={(e) => setFilename(e.target.value)}
+                    placeholder="combined"
+                    disabled={busy}
+                    className="max-w-xs"
+                  />
+                  <span className="text-sm text-muted-foreground">.pdf</span>
+                </div>
+              </div>
               <Button size="lg" onClick={handleCombine} disabled={busy}>
                 {busy ? (
                   <>
