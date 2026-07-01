@@ -8,6 +8,8 @@ import { DropZone } from "@/components/pdf-combiner/DropZone";
 import { FileList } from "@/components/pdf-combiner/FileList";
 import type { CombinerItem } from "@/components/pdf-combiner/FileRow";
 import { combineFiles, detectKind } from "@/lib/combine-pdf";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/")({
   head: () => ({
