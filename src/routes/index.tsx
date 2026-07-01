@@ -33,6 +33,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const [items, setItems] = useState<CombinerItem[]>([]);
+  const [filename, setFilename] = useState("combined");
   const [busy, setBusy] = useState(false);
   const itemsRef = useRef<CombinerItem[]>([]);
   itemsRef.current = items;
