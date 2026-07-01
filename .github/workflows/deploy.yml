@@ -18,7 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: oven-sh/setup-bun@v2
         with:
@@ -41,7 +41,7 @@ jobs:
       - name: Build
         env:
           BASE_PATH: ${{ steps.base.outputs.path }}
-        run: bun run build
+        run: bun run build:pages
 
       - name: Locate build output
         id: out
