@@ -102,8 +102,8 @@ function Index() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "combined.pdf";
-      document.body.appendChild(a);
+      const safe = (filename.trim() || "combined").replace(/\.pdf$/i, "").replace(/[\\/:*?"<>|]+/g, "-");
+      a.download = `${safe}.pdf`;
       a.click();
       a.remove();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
