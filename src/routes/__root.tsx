@@ -76,21 +76,24 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "PDF Combiner — Merge PDFs and Images Privately" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
+      { title: "Gun Hero — Merge & Survive" },
       {
         name: "description",
         content:
-          "Combine PDFs and images into a single PDF in your browser. No uploads, no accounts, purged on exit.",
+          "Merge weapon parts, gear up your cat, and survive endless waves. A tiny installable merge-battler.",
       },
-      { property: "og:title", content: "PDF Combiner — Merge PDFs and Images Privately" },
+      { property: "og:title", content: "Gun Hero — Merge & Survive" },
       {
         property: "og:description",
-        content:
-          "Combine PDFs and images into a single PDF in your browser. No uploads, purged on exit.",
+        content: "Merge weapon parts and survive endless waves in this installable merge-battler.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "theme-color", content: "#4f7cff" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+      { name: "apple-mobile-web-app-title", content: "Gun Hero" },
     ],
     links: [
       {
@@ -98,6 +101,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "manifest", href: "/manifest.webmanifest" },
+      { rel: "apple-touch-icon", href: "/icons/apple-touch-icon.png" },
     ],
   }),
   shellComponent: RootShell,

@@ -47,9 +47,7 @@ export function FileRow({ item, index, onRemove }: Props) {
       >
         <GripVertical className="h-5 w-5" />
       </button>
-      <span className="w-6 text-center text-sm font-medium text-muted-foreground">
-        {index + 1}
-      </span>
+      <span className="w-6 text-center text-sm font-medium text-muted-foreground">{index + 1}</span>
       <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-md bg-muted">
         {item.kind === "image" && item.previewUrl ? (
           <img src={item.previewUrl} alt="" className="h-full w-full object-cover" />
