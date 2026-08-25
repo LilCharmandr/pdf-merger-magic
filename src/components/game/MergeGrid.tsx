@@ -70,8 +70,8 @@ export function MergeGrid({
               data-cell-index={index}
               onPointerDown={handlePointerDown(index)}
               className={cn(
-                "relative flex aspect-square touch-none select-none items-center justify-center rounded-xl border-2 border-transparent bg-background/80 shadow-sm transition-colors",
-                cell && "cursor-grab active:cursor-grabbing",
+                "relative flex aspect-square select-none items-center justify-center rounded-xl border-2 border-transparent bg-background/80 shadow-sm transition-colors",
+                cell && "touch-none cursor-grab active:cursor-grabbing",
                 isHoverTarget && "border-primary bg-primary/10",
                 isDragSource && "opacity-30",
               )}

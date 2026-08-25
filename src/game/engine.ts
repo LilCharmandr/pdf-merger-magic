@@ -262,6 +262,7 @@ export class GunHeroEngine {
   private findTarget(catX: number, range: number): Enemy | null {
     let best: Enemy | null = null;
     for (const e of this.enemies) {
+      if (e.hp <= 0) continue;
       if (e.x - catX > range) continue;
       if (!best || e.x < best.x) best = e;
     }
