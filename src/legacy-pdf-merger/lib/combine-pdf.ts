@@ -5,7 +5,12 @@ export type SupportedKind = "pdf" | "image";
 export function detectKind(file: File): SupportedKind | null {
   const type = file.type.toLowerCase();
   if (type === "application/pdf") return "pdf";
-  if (type === "image/png" || type === "image/jpeg" || type === "image/jpg" || type === "image/webp") {
+  if (
+    type === "image/png" ||
+    type === "image/jpeg" ||
+    type === "image/jpg" ||
+    type === "image/webp"
+  ) {
     return "image";
   }
   return null;
